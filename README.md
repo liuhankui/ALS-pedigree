@@ -1,5 +1,33 @@
 # ALS-pedigree
 
+## required software
+```
+fastp, https://github.com/OpenGene/fastp
+BWA, https://github.com/lh3/bwa
+samblaster, https://github.com/GregoryFaust/samblaster
+sambamba, https://github.com/biod/sambamba
+Samtools, https://github.com/samtools/samtools
+GATK4, https://gatk.Broadinst-itute.org
+CNVpytor, https://github.com/abyzovlab/CNVpytor
+lumpy-sv, https://github.com/arq5x/lumpy-sv
+ExpansionHunter, https://github.com/Illumina/ExpansionHunter
+plink, https://www.cog-genomics.org/plink
+cnvkit, https://github.com/etal/cnvkit
+ngmlr, https://github.com/philres/ngmlr
+bigWigToWig, https://github.com/ENCODE-DCC/kentUtils/tree/v302.1.0/bin/linux.x86_64
+wig2bed, https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/wig2bed.html
+swiftlink, https://github.com/ajm/swiftlink
+MORGAN, https://faculty.washington.edu/eathomp/Genepi/MORGAN/Morgan.shtml
+GIGI, http://faculty.washington.edu/wijsman/software.shtml
+vawk, https://github.com/cc2qe/vawk
+bcftools, https://github.com/samtools/bcftools
+tabix,bgzip, https://github.com/tabixio/tabix
+mosdepth, https://github.com/brentp/mosdepth
+vep, https://github.com/Ensembl/ensembl-vep
+R, https://www.r-project.org
+```
+
+
 ## WGS variant calling (SNV,INDEL,SV, CNV,STR) 
 
 ```
@@ -50,7 +78,7 @@ tabix pedigree.vep.vcf.gz -R s.bed -h|perl filter.md.error.pl -f fam.txt|bcftool
 plink --export ped --out tmp --tfile tmp
 tabix genetic.map.gz -R mogan.s.bed|cut -f 4 > mogan.map
 cat tmp.ped|cut -f '2,7-'|tr '\t' ' '|cat mogan.map tmp.af -|awk '{if(NR==1){print "map markers position";print ""};print}' > mogan.marker
-gl_auto glautopar
+gl_auto glauto.par
 tabix pedigree.vep.vcf.gz -R mogan.s.bed -h|bcftools +split-vep - -s worst -f "%CHROM %POS %REF %ALT %ChinaMAP_AF %gnomADg_AF_eas[ %GT]\n"|perl gigi.ped.pl -minaf 0 -maxaf 0.01
 plink --export ped --out tmp --tfile tmp
 cat tmp.ped|cut -f '2,7-'|tr '\t' ' ' > gigi.genotype
